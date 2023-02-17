@@ -39,6 +39,15 @@ class PlaylistRepository extends ServiceEntityRepository
         }
     }
     
+    const ID = 'p.id';
+    const PLAYLIST_NAME = 'p.name';
+    const CATEGORIE_NAME = 'c.name';
+    const CHAMP_RESULTAT_CATEGORIENAME = 'categoriename';    
+    const PLAYLIST_FORMATION = 'p.formations';
+    const FORMATION_CATEGORIE = 'f.categories';
+    
+   
+    
     /**
      * Retourne toutes les playlists triées sur un champ
      * @param type $champ
@@ -47,15 +56,15 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findAllOrderBy($champ, $ordre): array{
         return $this->createQueryBuilder('p')
-                ->select('p.id id')
-                ->addSelect('p.name name')
-                ->addSelect('c.name categoriename')
-                ->leftjoin('p.formations', 'f')
-                ->leftjoin('f.categories', 'c')
-                ->groupBy('p.id')
-                ->addGroupBy('c.name')
+                ->select(self::ID)
+                ->addSelect(self::PLAYLIST_NAME)
+                ->addSelect( self::CATEGORIE_NAME.' '.self::CHAMP_RESULTAT_CATEGORIENAME)
+                ->leftjoin(self::PLAYLIST_FORMATION, 'f')
+                ->leftjoin(self::FORMATION_CATEGORIE, 'c')
+                ->groupBy(self::ID)
+                ->addGroupBy( self::CATEGORIE_NAME)
                 ->orderBy('p.'.$champ, $ordre)
-                ->addOrderBy('c.name')
+                ->addOrderBy( self::CATEGORIE_NAME)
                 ->getQuery()
                 ->getResult();       
     }
@@ -74,32 +83,32 @@ class PlaylistRepository extends ServiceEntityRepository
         }    
         if($table==""){      
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
+                    ->select(self::ID)
+                    ->addSelect(self::PLAYLIST_NAME)
+                    ->addSelect( self::CATEGORIE_NAME.' '.self::CHAMP_RESULTAT_CATEGORIENAME)
+                    ->leftjoin(self::PLAYLIST_FORMATION, 'f')
+                    ->leftjoin(self::FORMATION_CATEGORIE, 'c')
                     ->where('p.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->addGroupBy('c.name')
-                    ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
+                    ->groupBy(self::ID)
+                    ->addGroupBy( self::CATEGORIE_NAME)
+                    ->orderBy(self::PLAYLIST_NAME, 'ASC')
+                    ->addOrderBy( self::CATEGORIE_NAME)
                     ->getQuery()
                     ->getResult();              
         }else{   
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
+                    ->select(self::ID)
+                    ->addSelect(self::PLAYLIST_NAME)
+                    ->addSelect( self::CATEGORIE_NAME.' '.self::CHAMP_RESULTAT_CATEGORIENAME)
+                    ->leftjoin(self::PLAYLIST_FORMATION, 'f')
+                    ->leftjoin(self::FORMATION_CATEGORIE, 'c')
                     ->where('c.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->addGroupBy('c.name')
-                    ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
+                    ->groupBy(self::ID)
+                    ->addGroupBy( self::CATEGORIE_NAME)
+                    ->orderBy(self::PLAYLIST_NAME, 'ASC')
+                    ->addOrderBy( self::CATEGORIE_NAME)
                     ->getQuery()
                     ->getResult();              
             

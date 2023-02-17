@@ -17,11 +17,6 @@ class AccueilController extends AbstractController{
      * @var FormationRepository
      */
     private $repository;
-    
-    private $aSupprimer;
-    
-    private $aSupprimer2;
-    
     /**
      * 
      * @param FormationRepository $repository
